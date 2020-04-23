@@ -60,7 +60,7 @@ const VariantSchema = new Schema ({
 
     status: {
         type: String,
-        enum: ['Calculando', 'Sin conflicto', 'Conflicto','Completo'],
+        enum: ['Calculando', 'Sin Conflicto', 'Conflicto','Completo'],
         default: 'Calculando'
     },
 
@@ -73,5 +73,21 @@ const VariantSchema = new Schema ({
 
 
 })
+
+VariantSchema.virtual('final_price').get(function(){
+
+    if(this.price_selected==='original') return this.variant_price
+    if(this.price_selected==='recommended') return this.variant_recommended_price
+    return 0
+
+})
+
+VariantSchema.virtual('tax_calculated').get(function(){
+    
+    return ((this.tax * this.final_price) / 100).toFixed(2)
+})
+
+VariantSchema.set('toObject', {virtuals: true})
+VariantSchema.set('toJSON', {virtuals: true})
 
 module.exports = mongoose.model('Variants', VariantSchema);

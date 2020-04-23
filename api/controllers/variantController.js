@@ -30,7 +30,7 @@ exports.review_variants = async (req,res) => {
         //actualizo datos
         store.status = 'en_revision'
         store.variants = variants_ids
-        await store.save()
+        await store.save() 
 
         const new_store = await Store.findOne({ shopify_shop_id: req.params.id}).populate('variants')
 
